@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0;padding:0;height:100%;background:#002958;color:#fff;font-family:"Segoe UI",Arial,sans-serif;overflow:hidden}.w{padding:4px 10px}.c{border-left:3px solid #1f8ae0;padding:1px 0 1px 8px;margin:0 0 2px}.l{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#b9d4ee;line-height:1.1}.r{display:flex;align-items:baseline;gap:6px;line-height:1.1}.t{font-size:1.15rem;font-weight:600;font-variant-numeric:tabular-nums}.d{font-size:.64rem;color:#9ec0dd}</style></head><body><div class="w" id="w"></div><script>
+var p=new URLSearchParams(location.search);
+var zones=(p.get('zones')||'America/New_York,America/Chicago,America/Denver,America/Los_Angeles').split(',');
+var labels=(p.get('labels')||'').split(',');
+var w=document.getElementById('w');
+zones.forEach(function(z,i){
+  z=z.trim();if(!z)return;
+  var lbl=(labels[i]||'').trim()||z.split('/').pop().replace(/_/g,' ');
+  var c=document.createElement('div');c.className='c';
+  c.innerHTML='<div class="l"></div><div class="r"><span class="t" data-tz="'+z+'">--:--:--</span><span class="d" data-d="'+z+'"></span></div>';
+  c.querySelector('.l').textContent=lbl;
+  w.appendChild(c);
+});
+function u(){var n=new Date();
+document.querySelectorAll('[data-tz]').forEach(function(e){try{e.textContent=new Intl.DateTimeFormat('en-US',{timeZone:e.dataset.tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(n)}catch(x){e.textContent='bad zone'}});
+document.querySelectorAll('[data-d]').forEach(function(e){try{e.textContent=new Intl.DateTimeFormat('en-US',{timeZone:e.dataset.d,weekday:'short',month:'short',day:'numeric'}).format(n)}catch(x){e.textContent=''}});
+}u();setInterval(u,1000);
+</script></body></html>
